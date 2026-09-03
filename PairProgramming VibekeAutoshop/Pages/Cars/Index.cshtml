@@ -1,0 +1,50 @@
+@page
+@model PairProgramming_VibekeAutoshop.Pages.Cars.IndexModel
+@{
+    ViewData["Title"] = "Biler";
+}
+
+<section class="page-header">
+    <h1>Vores biler</h1>
+    <p>Find din næste bil - til salg eller leje</p>
+</section>
+
+<div class="car-grid">
+    @foreach (var car in Model.Cars)
+    {
+        <div class="car-card glow-card">
+            <div class="car-card-header">
+                <h2>@car.Brand @car.Model</h2>
+                <span class="car-year">@car.Year</span>
+            </div>
+            <ul class="car-details">
+                <li><span>Reg. nr.</span> @car.RegistrationNumber</li>
+                <li><span>Kilometer</span> @car.Mileage.ToString("N0") km</li>
+                @if (car.IsForSale)
+                {
+                    <li><span>Pris</span> @car.Price.ToString("N0") kr</li>
+                }
+                @if (car.IsForRent && car.RentalPricePerDay.HasValue)
+                {
+                    <li><span>Leje</span> @car.RentalPricePerDay.Value.ToString("N0") kr/dag</li>
+                }
+            </ul>
+            <div class="car-actions">
+                @if (car.IsForSale)
+                {
+                    <form method="post" asp-page-handler="Buy">
+                        <input type="hidden" name="id" value="@car.Id" />
+                        <button type="submit" class="btn-glow btn-buy">Køb</button>
+                    </form>
+                }
+                @if (car.IsForRent)
+                {
+                    <form method="post" asp-page-handler="Rent">
+                        <input type="hidden" name="id" value="@car.Id" />
+                        <button type="submit" class="btn-glow btn-rent">Lej</button>
+                    </form>
+                }
+            </div>
+        </div>
+    }
+</div>

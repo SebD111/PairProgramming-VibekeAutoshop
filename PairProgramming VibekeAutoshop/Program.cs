@@ -1,7 +1,13 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using PairProgramming_VibekeAutoshop.Repositories;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddRazorPages();
+
+builder.Services.AddSingleton<ICarRepository, CarRepository>();
+builder.Services.AddSingleton<ISaleRepository, SaleRepository>();
+builder.Services.AddSingleton<IRentalRepository, RentalRepository>();
 
 var app = builder.Build();
 
